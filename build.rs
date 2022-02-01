@@ -12,7 +12,7 @@ fn main() {
         "cargo:rustc-link-search=native={}",
         Path::new(&dir).join("compact_enc_det/lib").display()
     );
-    println!("cargo:rustc-link-lib=ced");
+    println!("cargo:rustc-link-lib=static=ced");
     // println!("cargo:rustc-link-lib=storm");
     // println!("cargo:rustc-link-lib=bz2");
     // println!("cargo:rustc-link-lib=z");
