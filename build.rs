@@ -20,7 +20,6 @@ fn main() {
 
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=src/wrapper.hpp");
-    println!("cargo:rerun-if-changed=compact_enc_det");
     println!("cargo:rerun-if-changed=compact_enc_det/lib/libced.a");
 
     // Tell cargo to tell rustc to link the system bzip2
