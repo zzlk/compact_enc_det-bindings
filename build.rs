@@ -3,8 +3,26 @@ extern crate bindgen;
 use std::env;
 use std::path::Path;
 use std::path::PathBuf;
+use std::process::Command;
 
 fn main() {
+    Command::new("sh")
+    .current_dir("compact_enc_det")
+    .args(&["autogen.sh"])
+    .status()
+    .expect("failed to autogen");
+
+    Command::new("make")
+    .current_dir("compact_enc_det")
+    // .env("LUA_DIR", lua_dir)
+    .status()
+    .expect("failed to make!");
+
+    // Tell cargo to invalidate the built crate whenever the wrapper changes
+    println!("cargo:rerun-if-changed=src/wrapper.hpp");
+    println!("cargo:rerun-if-changed=compact_enc_det");
+    println!("cargo:rerun-if-changed=compact_enc_det/lib/libced.a");
+
     // Tell cargo to tell rustc to link the system bzip2
     // shared library.
     let dir = env::var("CARGO_MANIFEST_DIR").unwrap();
@@ -13,13 +31,6 @@ fn main() {
         Path::new(&dir).join("compact_enc_det/lib").display()
     );
     println!("cargo:rustc-link-lib=static=ced");
-    // println!("cargo:rustc-link-lib=storm");
-    // println!("cargo:rustc-link-lib=bz2");
-    // println!("cargo:rustc-link-lib=z");
-    // println!("cargo:rustc-link-lib=stdc++");
-
-    // Tell cargo to invalidate the built crate whenever the wrapper changes
-    println!("cargo:rerun-if-changed=src/wrapper.hpp");
 
     // The bindgen::Builder is the main entry point
     // to bindgen, and lets you build up options for
