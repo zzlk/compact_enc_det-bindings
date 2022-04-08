@@ -6,17 +6,19 @@ use std::path::PathBuf;
 use std::process::Command;
 
 fn main() {
-    Command::new("sh")
+    assert!(Command::new("sh")
     .current_dir("compact_enc_det")
-    .args(&["autogen.sh"])
+    .args(&["./autogen.sh"])
     .status()
-    .expect("failed to autogen");
+    .expect("failed to autogen")
+    .success());
 
-    Command::new("make")
+    assert!(Command::new("make")
     .current_dir("compact_enc_det")
     // .env("LUA_DIR", lua_dir)
     .status()
-    .expect("failed to make!");
+    .expect("failed to make!")
+    .success());
 
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=src/wrapper.hpp");
