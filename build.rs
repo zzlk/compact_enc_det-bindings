@@ -7,18 +7,18 @@ use std::process::Command;
 
 fn main() {
     assert!(Command::new("sh")
-    .current_dir("compact_enc_det")
-    .args(&["./autogen.sh"])
-    .status()
-    .expect("failed to autogen")
-    .success());
+        .current_dir("compact_enc_det")
+        .args(&["./autogen.sh"])
+        .status()
+        .expect("failed to autogen")
+        .success());
 
     assert!(Command::new("make")
-    .current_dir("compact_enc_det")
-    // .env("LUA_DIR", lua_dir)
-    .status()
-    .expect("failed to make!")
-    .success());
+        .current_dir("compact_enc_det")
+        // .env("LUA_DIR", lua_dir)
+        .status()
+        .expect("failed to make!")
+        .success());
 
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=src/wrapper.hpp");
@@ -32,6 +32,7 @@ fn main() {
         Path::new(&dir).join("compact_enc_det/lib").display()
     );
     println!("cargo:rustc-link-lib=static=ced");
+    println!("cargo:rustc-link-lib=stdc++");
 
     // The bindgen::Builder is the main entry point
     // to bindgen, and lets you build up options for
